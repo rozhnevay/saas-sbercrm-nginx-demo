@@ -1,0 +1,30 @@
+user nginx;
+worker_processes auto;
+
+error_log /var/log/nginx/error.log;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
+    access_log /var/log/nginx/access.log;
+
+
+
+    server {
+        listen 8080;
+        server_name localhost; # dns server name (external)
+
+        location / {
+            proxy_redirect off;
+            proxy_pass http://45.12.237.160:8080;
+
+            proxy_read_timeout 180s;
+            proxy_http_version 1.1;
+        }
+    }
+}
